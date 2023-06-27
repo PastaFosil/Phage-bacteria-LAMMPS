@@ -1,0 +1,9 @@
+
+    units           lj
+    atom_style     angle
+    boundary       p p p
+    dimension      3  
+    pair_style     dpd 1.0 2.5 43653
+    comm_style     brick
+
+    
