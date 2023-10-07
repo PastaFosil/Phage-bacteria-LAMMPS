@@ -1,0 +1,36 @@
+
+units           lj
+atom_style     angle
+boundary       p p p
+dimension      3  
+
+variable seed equal 414543
+variable temperature equal 1.0
+variable D equal 0.77           #difusion constant
+variable gamma equal 1.0/${D}   #translational friction
+variable rc equal 1.122462048   #cutoff radius
+
+atom_style atomic
+
+read_data             "brownian.data"
+
+group dumbbell type 1
+mass 1 1.0 
+
+pair_style     lj/cut 2.5
+pair_coeff  1 1  1.0 1.0 ${rc}
+
+fix 1 all nve
+fix brown1 1 brownian ${temperature} gamma_t ${gamma} ${seed} k 1.0
+
+compute msd1 dumbbell msd
+variable msd1 equal c_msd1[4]
+fix msd1fix dumbbell ave/time 1 1 1  c_msd1[4] file msdDumbbell.data 
+
+timestep 0.005
+thermo_style custom step temp 
+thermo 1000
+
+dump 1 dumbbell custom 10000 dump.dumbbell id  xu yu zu vx vy vz 
+
+run 100000

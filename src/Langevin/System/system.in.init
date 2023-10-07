@@ -1,0 +1,7 @@
+
+units           lj
+atom_style     angle
+boundary       p p p
+dimension      3  
+pair_style     lj/cut 10 
+comm_style     brick

@@ -1,0 +1,23 @@
+LAMMPS Description
+
+     1600  atoms #2400virus
+     0  bonds
+     0  angles
+     0  dihedrals
+     0  impropers
+
+     1  atom types
+     0  bond types
+     0  angle types
+     0  dihedral types
+     0  improper types
+
+  -10 10 xlo xhi
+  -10 10 ylo yhi
+  -10 10 zlo zhi
+
+Masses
+
+1 1.00  # H
+
+Atoms  # angle
