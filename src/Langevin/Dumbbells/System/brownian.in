@@ -12,7 +12,7 @@ variable rc equal 1.122462048   #cutoff radius
 
 atom_style atomic
 
-read_data             "brownian.data"
+read_data             brownian_L_20.0_rho_0.2.data
 
 group dumbbell type 1
 mass 1 1.0 

@@ -26,10 +26,8 @@ fix 		        1 all nve
 fix 		        3 Dimero rigid molecule
 
 #MSD
-compute                	msd1 Solvente msd 
-compute                 msd3 Dimero msd
+compute                 msd1 Dimero msd
 variable               	msd1 equal c_msd1[4]
-variable                msd3 equal c_msd3[4]
 
 #g(r)
 #agua
@@ -39,13 +37,12 @@ variable                msd3 equal c_msd3[4]
 #fix			grWaterfix all ave/time 5000 20 100000 c_grWater[*] file grWater.data mode vector
 
 #set                    group SPCE image 0 0 0
-fix                    msd1fix Solvente ave/time 1 1 1  c_msd1[4] file msd1w.data 
-fix                    msd3fix Dimero ave/time 1 1 1 c_msd3[4] file msd3w.data
+fix                    msd3fix Dimero ave/time 1 1 1 c_msd3[4] file msd.data
 
 thermo_style	        custom step# etotal ke pe ebond enthalpy temp press c_msdA[4]  
 thermo                 500
 thermo_modify  	flush yes
-#dump 1 all atom 10000 dump.lammpstrjw
+dump 1 all atom 10000 dump.lammpstrj
 dump 2 Dimero custom 10000 dump.dimero id  xu yu zu vx vy vz 
 #dump 4 Water custom 10 dump.mywatermenor id  xu yu zu vx vy vz
 run 10000000

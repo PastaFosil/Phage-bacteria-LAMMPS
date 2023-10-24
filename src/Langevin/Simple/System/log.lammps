@@ -1,0 +1,206 @@
+LAMMPS (23 Jun 2022 - Update 4)
+# Defining system
+units           lj
+atom_style     atomic
+boundary       p p p
+dimension      3
+
+# Read positions from external file
+read_data brownian_L_20.0_rho_0.2.data
+Reading data file ...
+  orthogonal box = (-10 -10 -10) to (10 10 10)
+  1 by 2 by 2 MPI processor grid
+  reading atoms ...
+  3200 atoms
+  read_data CPU = 0.005 seconds
+
+# System variables
+variable seed equal 414543
+variable temperature equal 1.0
+variable D equal 0.77           #difusion constant
+variable gamma equal 1.0/${D}   #translational friction
+variable gamma equal 1.0/0.77   
+variable rc equal 1.122462048   #cutoff radius
+
+# Atom types
+group dumbbell type 1
+3200 atoms in group dumbbell
+mass 1 1.0
+
+# Define time integration
+timestep 0.00001
+fix 1 all nve
+
+# Brownian fix
+fix brownFix dumbbell brownian ${temperature} ${seed} gamma_t ${gamma}
+fix brownFix dumbbell brownian 1 ${seed} gamma_t ${gamma}
+fix brownFix dumbbell brownian 1 414543 gamma_t ${gamma}
+fix brownFix dumbbell brownian 1 414543 gamma_t 1.2987012987013
+
+# Start with soft potential so particles push apart each other slowly
+#pair_style soft ${rc}
+#pair_coeff 1 1  100.0 ${rc}
+
+#run 100000
+
+# Switch to Lennard-Jones interatomic potential
+pair_style lj/cut 2.5
+pair_coeff 1 1 1.0 1.0 ${rc}
+pair_coeff 1 1 1.0 1.0 1.122462048
+
+# MSD
+compute msd1 dumbbell msd
+variable msd1 equal c_msd1[4]
+fix msd1fix dumbbell ave/time 1 1 1  c_msd1[4] file msdDumbbell.data
+
+thermo_style custom step temp
+thermo 1000
+
+dump 1 dumbbell custom 10000 dump.dumbbell id  xu yu zu vx vy vz
+
+# Run simulation
+run 100000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: One or more atoms are time integrated more than once (../modify.cpp:292)
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 1.422462
+  ghost atom cutoff = 1.422462
+  binsize = 0.71123102, bins = 29 29 29
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.796 | 4.8 | 4.804 Mbytes
+   Step          Temp     
+         0   0            
+      1000   155447.22    
+      2000   153528.85    
+      3000   154915.75    
+      4000   154643.73    
+      5000   156136.01    
+      6000   155559.65    
+      7000   155725.06    
+      8000   153786.17    
+      9000   152527.88    
+     10000   155259.37    
+     11000   154730.19    
+     12000   152902.38    
+     13000   154267.35    
+     14000   152673.11    
+     15000   154981.58    
+     16000   154888.89    
+     17000   155264.26    
+     18000   154672.33    
+     19000   152597.26    
+     20000   153264.18    
+     21000   153738.77    
+     22000   153174.11    
+     23000   156769.05    
+     24000   151406.76    
+     25000   153402.22    
+     26000   153754.86    
+     27000   153926.39    
+     28000   154257.71    
+     29000   153212.51    
+     30000   153403.08    
+     31000   155181.53    
+     32000   153836.8     
+     33000   153063.64    
+     34000   152529       
+     35000   152793.62    
+     36000   153006.43    
+     37000   153874.5     
+     38000   154157.39    
+     39000   153430.95    
+     40000   156831.84    
+     41000   153658.97    
+     42000   155827.62    
+     43000   154669.7     
+     44000   155574.12    
+     45000   154292.14    
+     46000   154350.39    
+     47000   155453.04    
+     48000   154215.56    
+     49000   153890.94    
+     50000   152152.49    
+     51000   154476.59    
+     52000   151980.23    
+     53000   155091.31    
+     54000   153124.39    
+     55000   151427.55    
+     56000   152698.53    
+     57000   153636.79    
+     58000   153081.03    
+     59000   154148.06    
+     60000   152786.5     
+     61000   154576.19    
+     62000   152168.84    
+     63000   154936.79    
+     64000   154338.91    
+     65000   155809.43    
+     66000   153665.9     
+     67000   151894.99    
+     68000   152368.86    
+     69000   153043.95    
+     70000   154225.9     
+     71000   153964.79    
+     72000   154082.11    
+     73000   153942.5     
+     74000   154036.65    
+     75000   154414.22    
+     76000   155268.58    
+     77000   155624.74    
+     78000   153492.35    
+     79000   153529.21    
+     80000   156496.69    
+     81000   156548.56    
+     82000   154578.52    
+     83000   154295.41    
+     84000   153471.95    
+     85000   155680.12    
+     86000   155237.23    
+     87000   153575.03    
+     88000   155153.66    
+     89000   153747.05    
+     90000   154219.28    
+     91000   156909.72    
+     92000   154202.16    
+     93000   152430.58    
+     94000   154974.84    
+     95000   152506.04    
+     96000   153714.24    
+     97000   153789.64    
+     98000   152990.24    
+     99000   153351.12    
+    100000   152211.79    
+Loop time of 10.1602 on 4 procs for 100000 steps with 3200 atoms
+
+Performance: 8503.757 tau/day, 9842.312 timesteps/s
+99.5% CPU use with 4 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 2.4151     | 2.4669     | 2.544      |   3.1 | 24.28
+Neigh   | 1.1799     | 1.1981     | 1.2339     |   1.9 | 11.79
+Comm    | 1.8037     | 1.8944     | 1.9819     |   5.4 | 18.64
+Output  | 0.018823   | 0.018872   | 0.019006   |   0.1 |  0.19
+Modify  | 4.011      | 4.1472     | 4.2914     |   5.0 | 40.82
+Other   |            | 0.4348     |            |       |  4.28
+
+Nlocal:            800 ave         821 max         783 min
+Histogram: 1 0 0 1 1 0 0 0 0 1
+Nghost:            721 ave         726 max         718 min
+Histogram: 1 1 0 1 0 0 0 0 0 1
+Neighs:         1789.5 ave        1893 max        1711 min
+Histogram: 1 0 0 2 0 0 0 0 0 1
+
+Total # of neighbors = 7158
+Ave neighs/atom = 2.236875
+Neighbor list builds = 4853
+Dangerous builds = 0
+Total wall time: 0:00:10

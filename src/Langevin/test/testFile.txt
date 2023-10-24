@@ -1,1 +1,1 @@
-Este es el archivo de prueba generado
+dump 1 dumbbell custom 10000 dump.rho_0.111 id  xu yu zu vx vy vz
