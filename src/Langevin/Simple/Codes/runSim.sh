@@ -3,10 +3,10 @@
 rho=$1 #virus density (N/L^3)
 
 # Edit virus density
-sed -i "8s/rho_[0-9]\+\.[0-9]\+/rho_${rho}/" ../System/simple.in
+sed -i "s/rho_[0-9]\+\.[0-9]\+/rho_${rho}/g" ../System/simple.in
 # Edit msd save file name
 msdName="msd_rho_${rho}"
-sed -i "41s/file msd.\+\.data/file ${msdName}\.data/" ../System/simple.in
+sed -i "s/file msd.\+\.data/file ${msdName}\.data/g" ../System/simple.in
 # Edit dump file name
 dumpName="dump.rho_${rho}"
 sed -i "46s/dump\..\+ id/${dumpName} id/" ../System/simple.in

@@ -84,13 +84,13 @@ def animate(i): #Funcion ejecutada en cada cuadro (actualizacion de las posicion
     tree = cKDTree(pos,boxsize=[L,L]) #arbol de las particulas mas cercanas entre si
     dist = tree.sparse_distance_matrix(tree, max_distance=rc,output_type='coo_matrix') #Matriz con los puntos mas cercanos
     dist = dist.toarray()
-    LJ = totalPairForce(pos, dist)
+    #LJ = totalPairForce(pos, dist)
 
-    pos[:,0] += update[:,0]*(2*D*deltat)**(1/2)+(deltat*D/T)*LJ[:,0] #Actualizacion de la posicion en X de las particulas
-    pos[:,1] += update[:,1]*(2*D*deltat)**(1/2)+(deltat*D/T)*LJ[:,1] #                             en Y
+    pos[:,0] += update[:,0]*(2*D*deltat)**(1/2)#+(deltat*D/T)*LJ[:,0] #Actualizacion de la posicion en X de las particulas
+    pos[:,1] += update[:,1]*(2*D*deltat)**(1/2)#+(deltat*D/T)*LJ[:,1] #                             en Y
 
-    posNP[:,0] += update[:,0]*(2*D*deltat)**(1/2)+(deltat*D/T)*LJ[:,0]
-    posNP[:,1] += update[:,1]*(2*D*deltat)**(1/2)+(deltat*D/T)*LJ[:,1]
+    posNP[:,0] += update[:,0]*(2*D*deltat)**(1/2)#+(deltat*D/T)*LJ[:,0]
+    posNP[:,1] += update[:,1]*(2*D*deltat)**(1/2)#+(deltat*D/T)*LJ[:,1]
 
     print('t=', count*deltat)
 
@@ -226,6 +226,7 @@ lin = np.polyfit(temp, pMSD, 1)
 lin_model_sim = np.poly1d(lin)
 lin_model_an = np.poly1d([4*D, lin[1]])
 f, (a1,a2) = plt.subplots(1,2)
+#f, a1 = plt.subplots(1,1)
 a1.scatter(temp,pMSD, color='k' )
 a1.set_title('MSD')
 a1.set_xlabel('Tiempo')
@@ -236,6 +237,10 @@ lin_model_sim = np.poly1d(lin)
 lin_model_an = np.poly1d([4*D, lin[1]])
 a1.plot(temp, lin_model_sim(temp),color='g')
 a1.plot(temp, lin_model_an(temp),color = 'r')
+#plt.legend(["Datos", "Simulacion", "Analitico"],loc='lower right',bbox_to_anchor=(1.0,0.0))
+#plt.text(0.05,0.95, f'D={lin[0]/4}', transform=plt.gca().transAxes, 
+#                                fontsize=14, fontweight='bold',
+#                                va='top')
 
 '''
 #print(posT)
@@ -250,11 +255,10 @@ a2.set_title('g(r)')
 a2.set_xlabel('Distancia')
 a2.set_ylabel('g(r)')
 '''
-'''
+
 a2.axhline(D)
 a2.scatter(temp,np.append(pMSD[0],pMSD[1:]/(4*temp[1:])), color='k' )
 a2.set_title('D*')
 a2.set_xlabel('Tiempo')
 a2.set_ylabel('D*/4t')
 plt.show()
-'''

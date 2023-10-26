@@ -32,8 +32,10 @@ fix brownFix dumbbell brownian ${temperature} ${seed} gamma_t ${gamma} rng gauss
 #run 100000
 
 # Switch to Lennard-Jones interatomic potential
-pair_style lj/cut 2.5
-pair_coeff 1 1 1.0 1.0 ${rc} 
+#pair_style lj/cut 2.5
+#pair_coeff 1 1 1.0 1.0 ${rc} 
+
+pair_style none
 
 # MSD
 compute msd1 dumbbell msd
@@ -46,4 +48,4 @@ thermo 1000
 dump 1 dumbbell custom 10000 dump.rho_0.2 id  xu yu zu vx vy vz
 
 # Run simulation
-run 1000000
+run 5000000
