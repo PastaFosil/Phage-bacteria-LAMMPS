@@ -6,8 +6,8 @@ import sys
 
 os.chdir('/home/juancho/Documents/Fagocitos/src/Langevin/Simple/Codes')
 
-#msdName = sys.argv[1]
-msdName = "msd_rho_0.2"
+msdName = sys.argv[1]
+#msdName = 'msd_brownian_rho_0.2_3D'
 msd = pd.read_csv(f'../Results/{msdName}.csv',sep=' ')
 msd['step'] *= 0.00001
 msd.plot(x='step',y='msd', legend=False)
@@ -18,4 +18,5 @@ plt.text(0.05,0.95, f'D={m/6}', transform=plt.gca().transAxes,
 plt.show()
 
 plt.plot(msd['step'], msd['msd']/(6*msd['step']))
+plt.ylim(0,1.5)
 plt.show()

@@ -6,9 +6,13 @@ import sys
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+sigma = 1 #Diametro de la particula
 L = float(sys.argv[1]) #box side length (box will go from -L/2 to L/2)
-rho = float(sys.argv[2]) #virus density (N/L^3)
-N = int(round(rho*L*L*L)) #number of virus (2x number of monomers)
+#phi = .05 #packing fraction
+phi = float(sys.argv[2]) #packing fraction
+rho = 4*phi/(np.pi*sigma**2) #particle density
+#N = int(round(rho*L*L)) #number of virus (2x number of monomers)
+N=100
 total_particles = 2*N
 
 x0 = float(sys.argv[3]) #distance between monomers

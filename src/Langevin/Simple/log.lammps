@@ -1,5 +1,2 @@
-LAMMPS (23 Jun 2022 - Update 4)
-
-include               "system.in.init"
-ERROR on proc 0: Cannot open input script system.in.init: No such file or directory (../input.cpp:987)
-Last command: system.in.init
+ERROR on proc 0: Cannot open input script ../System/simple.in: No such file or directory (../lammps.cpp:524)
+Last command: (unknown)

@@ -2,7 +2,7 @@
 
 # Define the parameters
 L=20.0 #box side length (box will go from -L/2 to L/2)
-rho=0.0098 #virus density (N/L^3)
+rho=$1 #virus density (N/L^3)
 x0=1.0 #distance between monomers
 mono_diam=1.0 #diameter of monomers
 wall_diam=1.0 #diameter of wall particles
