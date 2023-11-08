@@ -22,14 +22,18 @@ mass 1 1.0
 timestep 0.00001
 
 # Brownian fix
-fix brownFix dumbbell brownian ${temperature} ${seed} gamma_t ${gamma} rng gaussian
+#fix 1 dumbbell brownian ${temperature} ${seed} gamma_t ${gamma} rng gaussian
+
+# Langevin fix
+fix 1 all nve
+fix 2 all langevin ${T} ${gamma} ${seed} 
 
 # Lennard-Jones interatomic potential
-pair_style lj/cut 2.5
-pair_coeff 1 1 1.0 1.0 ${rc} 
+#pair_style lj/cut 2.5
+#pair_coeff 1 1 1.0 1.0 ${rc} 
 
 #No interactions
-#pair_style none 
+pair_style none 
 
 # MSD
 compute msd1 dumbbell msd

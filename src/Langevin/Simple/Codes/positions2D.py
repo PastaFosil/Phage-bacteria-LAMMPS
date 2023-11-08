@@ -11,8 +11,8 @@ L = float(sys.argv[1]) #box side length (box will go from -L/2 to L/2)
 #phi = .05 #packing fraction
 phi = float(sys.argv[2]) #packing fraction
 rho = 4*phi/(np.pi*sigma**2) #particle density
-#N = int(round(rho*L*L)) #number of virus (2x number of monomers)
-N=100
+N = int(round(rho*L*L)) #number of virus (2x number of monomers)
+#N=100
 total_particles = 2*N
 
 x0 = float(sys.argv[3]) #distance between monomers
@@ -36,7 +36,7 @@ for i in np.arange(0,2*N-1):
     if y>=L-(wall_diam+mono_diam/2): #when the Y line fills, changes the x position
         y = wall_diam+mono_diam
         x += x0+mono_diam+separation
-    
+
 if np.any(virusPos>L): #checks if there's not enough space for viruses (try changing separation distance)
     print('ERROR: Insufficient space for particles in box')
 
@@ -45,7 +45,7 @@ else:
     print(total_particles)
 
 virusPos -= L/2 #translation to center box at origin
-
+'''
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
@@ -59,8 +59,7 @@ ax.set_ylabel('Y')
 # Show the plot
 plt.show()
 '''
-with open(f'../Data/brownian_L_{L}_rho_{rho}.data','w') as f: #writes file with [Particle ID] [Molecule ID] [Type] [X] [Y] [Z]
+with open(f'../Data/brownian_L_{L}_phi_{phi}_2D.data','w') as f: #writes file with [Particle ID] [Molecule ID] [Type] [X] [Y] [Z]
     f.write(f'\n')
     for i, pos in enumerate(virusPos):
-        f.write(f'{i+1} 1 {pos[0]:.16f} {pos[1]:.16f}\n')
-'''
+        f.write(f'{i+1} 1 {pos[0]:.16f} {pos[1]:.16f} 0\n')

@@ -2,10 +2,10 @@
 units           lj
 atom_style     atomic
 boundary       p p p
-dimension      3  
+dimension      2
 
 # Read positions from external file
-read_data ../Data/brownian_L_20.0_rho_0.2.data
+read_data ../Data/brownian_L_20.0_phi_0.05_2D.data
 
 # System variables
 variable seed equal 414543
@@ -20,7 +20,6 @@ mass 1 1.0
 
 # Define time integration
 timestep 0.00001
-fix 1 all nve
 
 # Brownian fix
 fix brownFix dumbbell brownian ${temperature} ${seed} gamma_t ${gamma} rng gaussian
@@ -40,12 +39,14 @@ pair_style none
 # MSD
 compute msd1 dumbbell msd
 variable msd1 equal c_msd1[4]
-fix msd1fix dumbbell ave/time 1 1 1  c_msd1[4] file msd_rho_0.0098.data 
+fix msd1fix dumbbell ave/time 1 1 1  c_msd1[4] file msd_brownian_phi_0.05_2D.data 
+
+fix 2d all enforce2d
 
 thermo_style custom step temp 
 thermo 1000
 
-dump 1 dumbbell custom 10000 dump.rho_0.0098 id  xu yu zu vx vy vz
+dump 1 dumbbell custom 10000 dump.brownian_phi_0.05_2D id  xu yu zu vx vy vz
 
 # Run simulation
 run 1000000

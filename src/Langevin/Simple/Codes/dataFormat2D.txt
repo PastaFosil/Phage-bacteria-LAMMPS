@@ -1,6 +1,6 @@
 LAMMPS Description
 
-     4800  atoms #virus
+     50 atoms #virus
      0  bonds
      0  angles
      0  dihedrals
@@ -14,7 +14,7 @@ LAMMPS Description
 
   -10 10 xlo xhi
   -10 10 ylo yhi
-  -10 10 zlo zhi
+  -0.25 0.25 zlo zhi
 
 Masses
 
