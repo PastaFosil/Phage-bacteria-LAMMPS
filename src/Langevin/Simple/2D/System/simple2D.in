@@ -1,0 +1,54 @@
+# Defining system
+units           lj
+atom_style     atomic
+boundary       p p p
+dimension      2
+
+# Read positions from external file
+read_data ../Data/brownian_L_20.0_phi_0.05_2D.data
+
+# System variables
+variable seed equal 414543
+variable temperature equal 1.0
+variable D equal 1.0            #difusion constant
+variable gamma equal 1.0/${D}   #translational friction
+variable rc equal 1.122462048   #cutoff radius
+variable fp equal 0.0           #self-propulsion magnitude
+variable sigma equal 1.0        #monomer diameter
+variable v0 equal ${D}*${fp}    #swimming speed
+variable Pe equal ${sigma}*${fp} #Peclet number
+
+# Atom types
+group dumbbell type 1
+mass 1 1.0 
+
+# Define time integration
+timestep 0.0001
+
+# Brownian fix
+fix brownFix dumbbell brownian ${temperature} ${seed} gamma_t ${gamma} rng gaussian
+
+# Self-propulsion fix
+fix active dumbbell propel/self velocity ${fp}
+
+# Lennard-Jones interatomic potential
+pair_style lj/cut 2.5
+pair_coeff 1 1 1.0 1.0 ${rc} 
+
+# No interactions
+#pair_style none
+
+# MSD
+compute msd1 dumbbell msd
+variable msd1 equal c_msd1[4]
+fix msd1fix dumbbell ave/time 10000 1 10000  c_msd1[4] file msd_brownian_phi_0.8_fp_0.0_2D.data 
+
+fix 2d all enforce2d
+
+thermo_style custom step
+thermo 1000
+
+dump 1 dumbbell custom 10000 dump.brownian_phi_0.8_fp_0.0_2D id  xu yu zu vx vy vz
+
+# Run simulation
+run 1000000000

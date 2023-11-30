@@ -1,0 +1,11 @@
+LAMMPS (23 Jun 2022 - Update 4)
+# Defining system
+units           lj
+atom_style     atomic
+boundary       p p p
+dimension      3
+
+# Read positions from external file
+read_data ../Data/brownian_L_20.0_phi_0.2.data
+ERROR: Cannot open file ../Data/brownian_L_20.0_phi_0.2.data: No such file or directory (../read_data.cpp:331)
+Last command: read_data ../Data/brownian_L_20.0_phi_0.2.data
