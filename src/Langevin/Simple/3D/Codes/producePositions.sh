@@ -5,7 +5,7 @@ L=20.0 #box side length (box will go from -L/2 to L/2)
 phi=$1 #virus density (N/L^3)
 x0=0.0 #distance between monomers
 mono_diam=1.0 #diameter of monomers
-separation=0.01 #separation between molecules
+separation=0.001 #separation between molecules
 
 boxSizeError="ERROR: Insufficient space for particles in box"
 

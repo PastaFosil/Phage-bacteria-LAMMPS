@@ -8,6 +8,7 @@ os.chdir('/home/juancho/Documents/Fagocitos/src/Langevin/Simple/2D/Codes')
 
 phi = sys.argv[1]
 fp = sys.argv[2]
+dt = float(sys.argv[3])
 
 #phi = 0.8
 #fp = 0.0
@@ -15,7 +16,7 @@ fp = sys.argv[2]
 msdName = f'msd_brownian_phi_{phi}_fp_{fp}_2D'
 
 msd = pd.read_csv(f'../Results/{msdName}.csv',sep=' ')
-msd['step'] *= 0.0001
+msd['step'] *= dt
 
 f, ax = plt.subplots()
 plt.scatter(msd['step'], msd['msd']/(4*msd['step']), s=5, c='g', label='Simulation results')
@@ -33,3 +34,5 @@ plt.text(0.05,0.95, f'D={m/4}', transform=plt.gca().transAxes,
                                 fontsize=14, fontweight='bold',
                                 va='top')
 plt.show()
+
+print(m/4)

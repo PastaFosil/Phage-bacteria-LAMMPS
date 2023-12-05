@@ -5,7 +5,7 @@ boundary       p p p
 dimension      2
 
 # Read positions from external file
-read_data ../Data/brownian_L_20.0_phi_0.05_2D.data
+read_data ../Data/brownian_L_20.0_phi_0.8_2D.data
 
 # System variables
 variable seed equal 414543
@@ -23,7 +23,13 @@ group dumbbell type 1
 mass 1 1.0 
 
 # Define time integration
-timestep 0.0001
+timestep 0.00001
+
+# Start with soft potential to space out particles
+#pair_style soft 2.5
+#pair_coeff * * 1.0 1.0
+# Run simulation with soft potential
+#run 100000
 
 # Brownian fix
 fix brownFix dumbbell brownian ${temperature} ${seed} gamma_t ${gamma} rng gaussian
@@ -33,7 +39,7 @@ fix active dumbbell propel/self velocity ${fp}
 
 # Lennard-Jones interatomic potential
 pair_style lj/cut 2.5
-pair_coeff 1 1 1.0 1.0 ${rc} 
+pair_coeff 1 1 1.5 1.0 ${rc} 
 
 # No interactions
 #pair_style none
@@ -51,4 +57,4 @@ thermo 1000
 dump 1 dumbbell custom 10000 dump.brownian_phi_0.8_fp_0.0_2D id  xu yu zu vx vy vz
 
 # Run simulation
-run 1000000000
+run 5000000

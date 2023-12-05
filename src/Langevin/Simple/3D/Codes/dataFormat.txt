@@ -1,6 +1,6 @@
 LAMMPS Description
 
-     12223  atoms #virus
+     6112  atoms #virus
      0  bonds
      0  angles
      0  dihedrals

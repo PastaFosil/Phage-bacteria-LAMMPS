@@ -37,7 +37,7 @@ y = mono_diam #y
 for i in np.arange(0,total_particles-1):
     
     virusPos[i,0] = x #x position of first monomer type
-    #virusPos[i,1] = y #y
+    virusPos[i,1] = y #y
     
     y += mono_diam+separation #y position for next monomer
     

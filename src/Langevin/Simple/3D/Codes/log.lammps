@@ -7,5 +7,89 @@ dimension      3
 
 # Read positions from external file
 read_data ../Data/brownian_L_20.0_phi_0.2.data
-ERROR: Cannot open file ../Data/brownian_L_20.0_phi_0.2.data: No such file or directory (../read_data.cpp:331)
-Last command: read_data ../Data/brownian_L_20.0_phi_0.2.data
+Reading data file ...
+  orthogonal box = (-10 -10 -10) to (10 10 10)
+  1 by 1 by 3 MPI processor grid
+  reading atoms ...
+  3056 atoms
+  read_data CPU = 0.005 seconds
+
+# System variables
+variable seed equal 414543
+variable temperature equal 1.0
+variable D equal 1.0           #difusion constant
+variable gamma equal 1.0/${D}   #translational friction
+variable gamma equal 1.0/1   
+variable rc equal 1.122462048   #cutoff radius
+variable fp equal 0.0          #self-propulsion magnitude
+variable sigma equal 1.0        #monomer diameter
+variable v0 equal ${D}*${fp}    #swimming speed
+variable v0 equal 1*${fp}    
+variable v0 equal 1*0    
+variable Pe equal ${sigma}*${fp} #Peclet number
+variable Pe equal 1*${fp} 
+variable Pe equal 1*0 
+
+# Atom types
+group dumbbell type 1
+3056 atoms in group dumbbell
+mass 1 1.0
+
+# Define time integration
+timestep 0.00001
+
+# Start with soft potential to space out particles
+#pair_style soft 2.5
+#pair_coeff * * 1.0 1.0
+# Run simulation with soft potential
+#run 100000
+
+# Brownian fix
+fix brown dumbbell brownian ${temperature} ${seed} gamma_t ${gamma} rng gaussian
+fix brown dumbbell brownian 1 ${seed} gamma_t ${gamma} rng gaussian
+fix brown dumbbell brownian 1 414543 gamma_t ${gamma} rng gaussian
+fix brown dumbbell brownian 1 414543 gamma_t 1 rng gaussian
+
+# Self-propulsion fix
+fix active dumbbell propel/self velocity ${fp}
+fix active dumbbell propel/self velocity 0
+
+# Lennard-Jones interatomic potential
+pair_style lj/cut 2.5
+pair_coeff 1 1 1.0 1.0 ${rc}
+pair_coeff 1 1 1.0 1.0 1.122462048
+
+#No interactions
+#pair_style none
+
+# MSD
+compute msd1 dumbbell msd
+variable msd1 equal c_msd1[4]
+fix msd1fix dumbbell ave/time 10000 1 10000  c_msd1[4] file msd_brownian_phi_0.2_fp_0.0_3D.data
+
+thermo_style custom step
+thermo 1000
+
+dump 1 dumbbell custom 10000 dump.brownian_phi_0.2_fp_0.0_3D id  xu yu zu vx vy vz
+#dump_modify sort id
+
+# Run simulation
+run 5000000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 1.422462
+  ghost atom cutoff = 1.422462
+  binsize = 0.71123102, bins = 29 29 29
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.876 | 6.733 | 9.78 Mbytes
+   Step    
+         0 
+ERROR on proc 0: Non-numeric atom coords - simulation unstable (../domain.cpp:555)
+Last command: run 5000000

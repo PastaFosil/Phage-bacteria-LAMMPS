@@ -25,6 +25,12 @@ mass 1 1.0
 # Define time integration
 timestep 0.00001
 
+# Start with soft potential to space out particles
+#pair_style soft 2.5
+#pair_coeff * * 1.0 1.0
+# Run simulation with soft potential
+#run 100000
+
 # Brownian fix
 fix brown dumbbell brownian ${temperature} ${seed} gamma_t ${gamma} rng gaussian
 
@@ -41,12 +47,12 @@ pair_coeff 1 1 1.0 1.0 ${rc}
 # MSD
 compute msd1 dumbbell msd
 variable msd1 equal c_msd1[4]
-fix msd1fix dumbbell ave/time 10000 1 10000  c_msd1[4] file msd_brownian_phi_0.3_fp_0.0_3D.data 
+fix msd1fix dumbbell ave/time 10000 1 10000  c_msd1[4] file msd_brownian_phi_0.2_fp_0.0_3D.data 
 
-thermo_style custom step temp 
+thermo_style custom step
 thermo 1000
 
-dump 1 dumbbell custom 10000 dump.brownian_phi_0.3_fp_0.0_3D id  xu yu zu vx vy vz
+dump 1 dumbbell custom 10000 dump.brownian_phi_0.2_fp_0.0_3D id  xu yu zu vx vy vz
 #dump_modify sort id
 
 # Run simulation

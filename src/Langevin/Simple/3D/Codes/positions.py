@@ -5,23 +5,30 @@ import sys
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-
+'''
 x0 = float(sys.argv[3]) #distance between monomers
 mono_diam = float(sys.argv[4]) #diameter of monomers
 separation = float(sys.argv[5]) #separation between molecules
 
 L = float(sys.argv[1]) #box side length (box will go from -L/2 to L/2)
 phi = float(sys.argv[2]) #virus density (N/L^3)
+'''
+L=20.0 #box side length (box will go from -L/2 to L/2)
+phi=0.5 #virus density (N/L^3)
+x0=0.0 #distance between monomers
+mono_diam=1.0 #diameter of monomers
+separation=0.01 #separation between molecules
+
 N = int(round(6*L*L*L*phi/(np.pi*mono_diam*mono_diam*mono_diam))) #number of virus (2x number of monomers)
 total_particles = N
 
 virusPos = np.zeros((total_particles,3)) #virus position array
 
-x = mono_diam           #x position of the first monomer
-y = mono_diam #y
-z = mono_diam           #z
+x = mono_diam/2           #x position of the first monomer
+y = mono_diam/2           #y
+z = mono_diam/2           #z
 
-for i in np.arange(0,total_particles-1,2):
+for i in np.arange(0,total_particles-1):
     
     virusPos[i,0] = x #x position of first monomer type
     virusPos[i,1] = y #y
@@ -40,7 +47,7 @@ for i in np.arange(0,total_particles-1,2):
         x += x0+mono_diam+separation
         y = mono_diam
         z = mono_diam
-    
+
 if np.any(virusPos>L): #checks if there's not enough space for viruses (try changing separation distance)
     print('ERROR: Insufficient space for particles in box')
 
@@ -49,7 +56,7 @@ else:
     print(total_particles)
 
 virusPos -= L/2 #translation to center box at origin
-'''
+
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
@@ -65,7 +72,7 @@ ax.set_zlabel('Z')
 
 # Show the plot
 plt.show()
-'''
+
 moleculeID = 0
 with open(f'../Data/brownian_L_{L}_phi_{phi}.data','w') as f: #writes file with [Particle ID] [Molecule ID] [Type] [X] [Y] [Z]
     f.write(f'\n')
