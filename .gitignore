@@ -1,1 +1,5 @@
 .env
+src/Langevin/*/*/Results
+src/Langevin/*/*/Dump
+./posterWMSP
+./evidencias
